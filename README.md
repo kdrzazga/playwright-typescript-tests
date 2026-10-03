@@ -1,3 +1,16 @@
+Run cucumber tests:
+npx cucumber-js --tags @add-remove-elements
+
+
+Run tests from tests (spec files):
+npm run  test:headed
+
+
+----
+npm test / npm run test:headed (Playwright's own test runner) — driven by the projects array in playwright.config.ts, which has three entries: chromium, firefox, webkit. By default, Playwright runs every test against every project in that array, so one npm test run = 3x execution (once per browser). You narrow it to one with --project=chromium (or firefox/webkit), or by commenting out entries in the config.
+
+npx cucumber-js — there's no multi-browser concept at all. The BeforeAll hook in support/hooks.ts launches exactly one browser for the entire run (whatever BROWSER resolves to, chromium by default now), and every scenario in that invocation uses that single instance. Running cucumber once never covers multiple browsers — to test the same scenarios across chromium, firefox, and webkit, you'd need to invoke the command three separate times with different BROWSER values, since nothing loops that for you.
+
 STARTUP:
 
 **Install Node.js and init project**
